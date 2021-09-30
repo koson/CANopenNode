@@ -1,70 +1,76 @@
 CANopenNode
 ===========
 
-CANopenNode is free and open source CANopen Stack.
+CANopenNode is free and open source CANopen protocol stack.
 
-CANopen is the internationally standardized (EN 50325-4)
-([CiA301](http://can-cia.org/standardization/technical-documents))
-CAN-based higher-layer protocol for embedded control system. For more
-information on CANopen see http://www.can-cia.org/
+CANopen is the internationally standardized (EN 50325-4) ([CiA301](http://can-cia.org/standardization/technical-documents)) higher-layer protocol for embedded control system built on top of CAN. For more information on CANopen see http://www.can-cia.org/
 
-CANopenNode is written in ANSI C in object-oriented way. It runs on
-different microcontrollers, as standalone application or with RTOS.
-Stack includes master functionalities. For Linux implementation with
-CANopen master functionalities see
-https://github.com/CANopenNode/CANopenSocket.
+CANopenNode is written in ANSI C in object-oriented way. It runs on different microcontrollers, as standalone application or with RTOS.
 
-Variables (communication, device, custom) are ordered in CANopen Object
-Dictionary and are accessible from both: C code and from CAN network.
+Variables (communication, device, custom) are collected in CANopen Object Dictionary and are accessible from both: C code and from CANopen network.
 
 CANopenNode homepage is https://github.com/CANopenNode/CANopenNode
 
+This is version 4 of CANopenNode with new Object Dictionary implementation. For older versions `git checkout` branches `v1.3-master` or `v2.0-master`.
 
-CANopen Features
+
+Characteristics
+---------------
+### CANopen
+ - [Object Dictionary](https://www.can-cia.org/can-knowledge/canopen/device-architecture/) offers clear and flexible organisation of any variables. Variables can be accessed directly or via read/write functions.
+ - [NMT](https://www.can-cia.org/can-knowledge/canopen/network-management/) slave to start, stop, reset device. Simple NMT master.
+ - [Heartbeat](https://www.can-cia.org/can-knowledge/canopen/error-control-protocols/) producer/consumer error control for monitoring of CANopen devices.
+ - [PDO](https://www.can-cia.org/can-knowledge/canopen/pdo-protocol/) for broadcasting process data with high priority and no protocol overhead. Variables from Object Dictionary can be dynamically mapped to the TPDO, which is then transmitted according to communication rules and received as RPDO by another device.
+ - [SDO](https://www.can-cia.org/can-knowledge/canopen/sdo-protocol/) server enables expedited, segmented and block transfer access to all Object Dictionary variables inside CANopen device.
+ - [SDO](https://www.can-cia.org/can-knowledge/canopen/sdo-protocol/) client can access any Object Dictionary variable on any CANopen device inside the network.
+ - [Emergency](https://www.can-cia.org/can-knowledge/canopen/special-function-protocols/) message producer/consumer.
+ - [Sync](https://www.can-cia.org/can-knowledge/canopen/special-function-protocols/) producer/consumer enables network synchronized transmission of the PDO objects, etc.
+ - [Time-stamp](https://www.can-cia.org/can-knowledge/canopen/special-function-protocols/) producer/consumer enables date and time synchronization in millisecond resolution.
+ - [LSS](https://www.can-cia.org/can-knowledge/canopen/cia305/) CANopen node-id and bitrate setup, master and slave, LSS fastscan.
+ - [CANopen gateway](https://www.can-cia.org/can-knowledge/canopen/cia309/), CiA309-3 Ascii command interface for NMT master, LSS master and SDO client.
+ - CANopen Safety, EN 50325-5, CiA304, "PDO like" communication in safety-relevant networks
+ - [CANopen Conformance Test Tool](https://www.can-cia.org/services/test-center/conformance-test-tool/) passed.
+
+### Other
+ - [Suitable for 16-bit microcontrollers and above](#device-support)
+ - [Multithreaded, real-time](#canopenNode-flowchart)
+ - [Object Dictionary editor](#object-dictionary-editor)
+ - Non-volatile storage for Object Dictionary or other variables. Automatic or controlled by standard CANopen commands, configurable.
+ - [Power saving possible](#power-saving)
+ - [Bootloader possible](https://github.com/CANopenNode/CANopenNode/issues/111) (for firmware update)
+
+
+Related projects
 ----------------
- - NMT slave to start, stop, reset device. Simple NMT master.
- - Heartbeat producer/consumer error control.
- - PDO linking and dynamic mapping for fast exchange of process variables.
- - SDO expedited, segmented and block transfer for service access to all parameters.
- - SDO master.
- - Emergency message.
- - Sync producer/consumer.
- - Non-volatile storage.
-
-
-Usage of the CANopenNode
-------------------------
-CANopenNode itself doesn't have complete working code for any microcontroller.
-It is only the library with the stack and drivers for different
-microcontrollers. It has example, which should compile on any system with
-template driver (drvTemplate), which actually doesn't access CAN hardware.
-CANopenNode should be used as a git submodule included in a project with
-specific hardware and specific application.
+ - [CANopenNode](https://github.com/CANopenNode/CANopenNode) (this project): CANopen protocol stack, base for CANopen device. It contains no device specific code (drivers), which must be added separately for each target system. An example shows the basic principles, compiles on any system, but does not connect to any CAN hardware.
+ - [CANopenDemo](https://github.com/CANopenNode/CANopenDemo): Demo device with CANopenNode and different target systems, tutorial and testing tools.
+ - [CANopenNode.github.io](https://github.com/CANopenNode/CANopenNode.github.io): Html documentation, compiled by doxygen, for CANopenDemo, CANopenNode and other devices, available also online: https://canopennode.github.io
+ - [CANopenEditor](https://github.com/CANopenNode/CANopenEditor): Object Dictionary editor, external GUI tool for editing CANopen Object Dictionary for custom device. It generates C source code, electronic data sheet and documentation for the device. It is a fork from [libedssharp](https://github.com/robincornelius/libedssharp).
+ - [CANopenLinux](https://github.com/CANopenNode/CANopenLinux): CANopenNode on Linux devices. It can be a basic CANopen device or more advanced with commander functionalities.
+ - [CANopenPIC](https://github.com/CANopenNode/CANopenPIC): CANopenNode on PIC microcontrollers from Microchip. Works with 16-bit and 32 bit devices. Includes example for Arduino style [Max32](https://reference.digilentinc.com/reference/microprocessor/max32/start) board.
+ - [doc/deviceSupport.md](doc/deviceSupport.md): List of other implementations of CANopenNode on different devices.
 
 
 Documentation, support and contributions
--------------------------
-Code is documented in header files. Running
-[doxygen](http://www.stack.nl/~dimitri/doxygen/index.html) in project
-base folder will produce complete html documentation. Just open
-CANopenNode/doc/html/index.html in browser.
+----------------------------------------
+All code is documented in the source header files. Some additional documents are in `doc` directory.
+
+To generate complete html documentation, run [doxygen](http://www.doxygen.nl/) in the project base directory: `sudo apt install doxygen graphviz pdf2svg; doxygen > /dev/null`
+
+Complete generated documentation is also available online: https://canopennode.github.io
+
+Tutorial, demo device and tests are available in [CANopenDemo](https://github.com/CANopenNode/CANopenDemo) repository.
 
 Report issues on https://github.com/CANopenNode/CANopenNode/issues
 
-Older and still active discussion group is on Sourceforge
-http://sourceforge.net/p/canopennode/discussion/387151/
+Older discussion group is on Sourceforge: http://sourceforge.net/p/canopennode/discussion/387151/
 
-For some implementations of CANopenNode on real hardware see table below.
-[CANopenSocket](https://github.com/CANopenNode/CANopenSocket) is nice
-implementation for Linux devices. It includes command line interface for
-master access of the CANopen network. There is also some Getting started.
-
-Contributions are welcome. Best way to contribute your code is to fork
-a project, modify it and then send a pull request.
+Contributions are welcome. Best way to contribute your code is to fork a project, modify it and then send a pull request. Please follow the [Recommended C style and coding rules](https://github.com/MaJerle/c-code-style), like indentation of 4 spaces, etc. There is also a `codingStyle` file with example.
 
 
-Flowchart of a typical CANopenNode implementation
--------------------------------------------------
+CANopenNode flowchart
+---------------------
+Flowchart of a typical CANopenNode implementation:
 ~~~
                             -----------------------
                            |     Program start     |
@@ -80,152 +86,143 @@ Flowchart of a typical CANopenNode implementation
                                  |     |     |
              --------------------      |      --------------------
             |                          |                          |
- -----------------------    -----------------------    -----------------------
-| CAN receive thread    |  | Timer interval thread |  | Mainline thread       |
-|                       |  |                       |  |                       |
-| - Fast response.      |  | - Realtime thread with|  | - Processing of time  |
-| - Detect CAN ID.      |  |   constant interval,  |  |   consuming tasks     |
-| - Partially process   |  |   typically 1ms.      |  |   in CANopen objects: |
-|   messages and copy   |  | - Network synchronized|  |    - SDO server,      |
-|   data to target      |  | - Copy inputs (RPDOs, |  |    - Emergency,       |
-|   CANopen objects.    |  |   HW) to Object Dict. |  |    - Network state,   |
-|                       |  | - May call application|  |    - Heartbeat.       |
-|                       |  |   for some processing.|  | - May cyclically call |
-|                       |  | - Copy variables from |  |   application code.   |
-|                       |  |   Object Dictionary to|  |                       |
-|                       |  |   outputs (TPDOs, HW).|  |                       |
- -----------------------    -----------------------    -----------------------
-
-              -----------------------
-             | SDO client (optional) |
-             |                       |
-             | - Can be called by    |
-             |   external application|
-             | - Can read or write   |
-             |   any variable from   |
-             |   Object Dictionary   |
-             |   from any node in the|
-             |   CANopen network.    |
-              -----------------------
+ ----------------------    ------------------------    -----------------------
+| CAN receive thread   |  | Timer interval thread  |  | Mainline thread       |
+|                      |  |                        |  |                       |
+| - Fast response.     |  | - Realtime thread with |  | - Processing of time  |
+| - Detect CAN ID.     |  |   constant interval,   |  |   consuming tasks     |
+| - Partially process  |  |   typically 1ms.       |  |   in CANopen objects: |
+|   messages and copy  |  | - Network synchronized |  |    - SDO server,      |
+|   data to target     |  | - Copy inputs (RPDOs,  |  |    - Emergency,       |
+|   CANopen objects.   |  |   HW) to Object Dict.  |  |    - Network state,   |
+|                      |  | - May call application |  |    - Heartbeat.       |
+|                      |  |   for some processing. |  |    - LSS slave        |
+|                      |  | - Copy variables from  |  | - Gateway (optional): |
+|                      |  |   Object Dictionary to |  |    - NMT master       |
+|                      |  |   outputs (TPDOs, HW). |  |    - SDO client       |
+|                      |  |                        |  |    - LSS master       |
+|                      |  |                        |  | - May cyclically call |
+|                      |  |                        |  |   application code.   |
+ ----------------------    ------------------------    -----------------------
 ~~~
+
+All code of the CANopenNode is non-blocking. Code in source files is collected into objects. Parts of the code can be enabled/disabled, so only files and parts of code can be used, which are required for the project. See stack configuration in 301/CO_config.h file.
+
+For most efficiency code can run in different thread as seen in above flowchart. This is suitable for microcontrollers. It is also possible to run everything from single thread, as available on Linux devices. Code includes mechanisms, which triggers processing of OD objects when necessary.
+
+In CANopen initialization section all CANopen objects are initialized. In run time CANopen objects are processed cyclically.
+
+Files CANopen.h and CANopen.c is a joint of all CANopen objects. It may seems complex, but offers some flexibility and is suitable for most common configurations of the CANopen objects. CANopen objects can be defined in global space or can be dynamically allocated. Object dictionary can be used default (OD.h/.c files), but configuration with multiple object dictionaries is also possible by using the #CO_config_t structure. CANopen.h and CANopen.c files can also be only a reference for more customized implementation of CANopenNode based device.
+
+Object Dictionary is a collection of all network accessible variables and offers most flexible usage. OD variables can be initialized by object dictionary or application can specify own read/write access functions for specific OD variables. Groups of OD variables are also able to be stored to non-volatile memory, either on command or automatically.
 
 
 File structure
 --------------
- - **CANopen.h/.c** - Initialization and processing of CANopen objects. Most
-   usual implementation of CANopen device.
- - **stack** - Directory with all CANopen objects in separate files.
-   - **CO_Emergency.h/.c** - CANopen Emergency object.
-   - **CO_NMT_Heartbeat.h/.c** - CANopen Network slave and Heartbeat producer object.
-   - **CO_HBconsumer.h/.c** - CANopen Heartbeat consumer object.
-   - **CO_SYNC.h/.c** - CANopen SYNC producer and consumer object.
-   - **CO_SDO.h/.c** - CANopen SDO server object. It serves data from Object dictionary.
-   - **CO_PDO.h/.c** - CANopen PDO object. It configures, receives and transmits CANopen process data.
-   - **CO_SDOmaster.h/.c** - CANopen SDO client object (master functionality).
-   - **CO_trace.h/.c** - Trace object with timestamp for monitoring variables from Object Dictionary (optional).
-   - **crc16-ccitt.h/.c** - CRC calculation object.
-   - **drvTemplate** - Directory with microcontroller specific files. In this
-     case it is template for new implementations. It is also documented, other
-     directories are not.
-     - **CO_driver.h/.c** - Microcontroller specific objects for CAN module.
-     - **eeprom.h/.c** - Functions for storage of Object dictionary, optional.
-     - **helpers.h/.c** - Some optional files with specific helper functions.
-   - **socketCAN** - Directory for Linux socketCAN interface.
-   - **PIC32** - Directory for PIC32 devices from Microchip.
-   - **PIC24_dsPIC33** - Directory for PIC24 and dsPIC33 devices from Microchip.
-   - **dsPIC30F** - Directory for dsPIC30F devices from Microchip.
-   - **eCos** - Directory for all devices supported by eCos RTOS.
-   - **SAM3X** - Directory for SAM3X ARM Cortex M3 devices with ASF library from Atmel.
-   - **STM32** - Directory for STM32 ARM devices from ST.
-   - **LPC177x_8x** - Directory for LPC177x (Cortex M3) devices with FreeRTOS from NXP.
-   - **MCF5282** - Directory for MCF5282 (ColdFire V2) device from Freescale.
- - **codingStyle** - Description of the coding style.
+ - **301/** - CANopen application layer and communication profile.
+   - **CO_config.h** - Configuration macros for CANopenNode.
+   - **CO_driver.h** - Interface between CAN hardware and CANopenNode.
+   - **CO_ODinterface.h/.c** - CANopen Object Dictionary interface.
+   - **CO_Emergency.h/.c** - CANopen Emergency protocol.
+   - **CO_HBconsumer.h/.c** - CANopen Heartbeat consumer protocol.
+   - **CO_NMT_Heartbeat.h/.c** - CANopen Network management and Heartbeat producer protocol.
+   - **CO_PDO.h/.c** - CANopen Process Data Object protocol.
+   - **CO_SDOclient.h/.c** - CANopen Service Data Object - client protocol (master functionality).
+   - **CO_SDOserver.h/.c** - CANopen Service Data Object - server protocol.
+   - **CO_SYNC.h/.c** - CANopen Synchronisation protocol (producer and consumer).
+   - **CO_TIME.h/.c** - CANopen Time-stamp protocol.
+   - **CO_fifo.h/.c** - Fifo buffer for SDO and gateway data transfer.
+   - **crc16-ccitt.h/.c** - Calculation of CRC 16 CCITT polynomial.
+ - **303/** - CANopen Recommendation
+   - **CO_LEDs.h/.c** - CANopen LED Indicators
+ - **304/** - CANopen Safety.
+   - **CO_SRDO.h/.c** - CANopen Safety-relevant Data Object protocol.
+   - **CO_GFC.h/.c** - CANopen Global Failsafe Command (producer and consumer).
+ - **305/** - CANopen layer setting services (LSS) and protocols.
+   - **CO_LSS.h** - CANopen Layer Setting Services protocol (common).
+   - **CO_LSSmaster.h/.c** - CANopen Layer Setting Service - master protocol.
+   - **CO_LSSslave.h/.c** - CANopen Layer Setting Service - slave protocol.
+ - **309/** - CANopen access from other networks.
+   - **CO_gateway_ascii.h/.c** - Ascii mapping: NMT master, LSS master, SDO client.
+ - **storage/**
+   - **CO_storage.h/.c** - CANopen data storage base object.
+   - **CO_storageEeprom.h/.c** - CANopen data storage object for storing data into block device (eeprom).
+   - **CO_eeprom.h** - Eeprom interface for use with CO_storageEeprom, functions are target system specific.
+ - **extra/**
+   - **CO_trace.h/.c** - CANopen trace object for recording variables over time.
+ - **example/** - Directory with basic example, should compile on any system.
+   - **CO_driver_target.h** - Example hardware definitions for CANopenNode.
+   - **CO_driver_blank.c** - Example blank interface for CANopenNode.
+   - **main_blank.c** - Mainline and other threads - example template.
+   - **CO_storageBlank.h/.c** - Example blank demonstration for data storage to non-volatile memory.
+   - **Makefile** - Makefile for example.
+   - **DS301_profile.xpd** - CANopen device description file for DS301. It includes also CANopenNode specific properties. This file is also available in Profiles in Object dictionary editor.
+   - **DS301_profile.eds**, **DS301_profile.md** - Standard CANopen EDS file and markdown documentation file, automatically generated from DS301_profile.xpd.
+   - **OD.h/.c** - CANopen Object dictionary source files, automatically generated from DS301_profile.xpd.
+ - **doc/** - Directory with documentation
+   - **CHANGELOG.md** - Change Log file.
+   - **deviceSupport.md** - Information about supported devices.
+   - **objectDictionary.md** - Description of CANopen object dictionary interface.
+   - **CANopenNode.png** - Little icon.
+   - **html** - Directory with documentation - must be generated by Doxygen.
+ - **CANopen.h/.c** - Initialization and processing of CANopen objects, suitable for common configurations.
+ - **codingStyle** - Example of the coding style.
  - **Doxyfile** - Configuration file for the documentation generator *doxygen*.
- - **Makefile** - Basic makefile.
  - **LICENSE** - License.
  - **README.md** - This file.
- - **example** - Directory with basic example.
-   - **main.c** - Mainline and other threads - example template.
-   - **application.h/.c** - Separate file with some functions, which are
-     called from main.c. May be used for application specific code.
-   - **CO_OD.h/.c** - CANopen Object dictionary. Automatically generated file.
-   - **IO.eds** - Standard CANopen EDS file, which may be used from CANopen
-     configuration tool. Automatically generated file.
-   - _ **project.xml** - XML file contains all data for CANopen Object dictionary.
-     It is used by *Object dictionary editor* application, which generates other
-     files. *Object dictionary editor* is currently fully  functional, but old
-     web application. See http://sourceforge.net/p/canopennode/code_complete/.
-   - _ **project.html** - *Object dictionary editor* launcher.
-
-Microcontroller support
------------------------
-
-|                     | Status (date) | OD storage | Example |
-|---------------------|:-------------:|:----------:|---------|
-| drvTemplate         | OK            | template   | [here](https://github.com/CANopenNode/CANopenNode) |
-| Linux socketCAN     | beta   (2016) | Yes        | [CANopenSocket](https://github.com/CANopenNode/CANopenSocket) |
-| Microchip PIC32     | stable (2015) | Yes        | [CANopenPIC](https://github.com/CANopenNode/CANopenPIC) |
-| Microchip PIC24, 33 | stable (2015) | no         | [CANopenPIC](https://github.com/CANopenNode/CANopenPIC) |
-| Microchip dsPIC30F  | beta   (2013) | no         | [CANopenPIC](https://github.com/CANopenNode/CANopenPIC) |
-| RTOS eCos           | stable (2013) | Yes        | [old repo](http://sourceforge.net/p/canopennode/code_complete/) |
-| Atmel SAM3X         | ?             | Yes        | [old repo](http://sourceforge.net/p/canopennode/code_complete/) |
-| ST STM32            | ?             | no         | [old repo](http://sourceforge.net/p/canopennode/code_complete/) |
-| NXP LPC177x_8x      | ?             | no         | [old repo](http://sourceforge.net/p/canopennode/code_complete/) |
-| Freescale MCF5282   | ?             | no         | [old repo](http://sourceforge.net/p/canopennode/code_complete/) |
 
 
-### Other known implementations with source code
- - AD ADSP-CM408 mixed signal controller Contributed by Analog devices, Inc. (dec 2014)
-   http://sourceforge.net/projects/canopennode-for-adsp-cm408f/
- - Discontinued implementations from earlier versions of CANopenNode
-   - Microchip PIC18F
-   - BECK IPC Embedded Web-Controller SC243
+Object dictionary editor
+------------------------
+Object Dictionary is one of the most essential parts of CANopen.
+
+To customize the Object Dictionary it is necessary to use external application: [CANopenEditor](https://github.com/CANopenNode/CANopenEditor). Latest pre-compiled [binaries](https://github.com/CANopenNode/CANopenEditor/archive/refs/heads/build.zip) are also available. Just extract the zip file and run the `EDSEditor.exe`. In Linux it runs with mono, which is available by default on Ubuntu. Just set file permissions to "executable" and then execute the program.
+
+In program, in preferences, set exporter to "CANopenNode_V4". Then start new project or open the existing project file.
+
+Many project file types are supported, EDS, XDD v1.0, XDD v1.1, old custom XML format. Generated project file can then be saved in XDD v1.1 file format (xmlns="http://www.canopen.org/xml/1.1"). Project file can also be exported to other formats, it can be used to generate documentation and CANopenNode source files for Object Dictionary.
+
+If new project was started, then `DS301_profile.xpd` may be inserted. If existing (old) project is edited, then existing `Communication Specific Parameters` may be deleted and then new `DS301_profile.xpd` may be inserted. Alternative is editing existing communication parameters with observation to Object Dictionary Requirements By CANopenNode in [objectDictionary.md](doc/objectDictionary.md).
+
+To clone, add or delete, select object(s) and use right click. Some knowledge of CANopen is required to correctly set-up the custom Object Dictionary. Separate objects can also be inserted from another project.
+
+CANopenNode includes some custom properties inside standard project file. See [objectDictionary.md](doc/objectDictionary.md) for more information.
 
 
-History of the project
-----------------------
-Project was initially hosted on http://sourceforge.net/projects/canopennode/
-It started in 2004 with PIC18F microcontrollers from Microchip.
-Fresh, cleaned repository of CANopenNode stack started on 25.7.2015.
-For older history see http://sourceforge.net/p/canopennode/code_complete/
+Device support
+--------------
+CANopenNode can run on many different devices. Each device (or microcontroller) must have own interface to CANopenNode. CANopenNode can run with or without operating system.
+
+It is not practical to have all device interfaces in a single project. Interfaces to other microcontrollers are in separate projects. See [deviceSupport.md](doc/deviceSupport.md) for list of known device interfaces.
+
+
+Some details
+------------
+### RTR
+RTR (remote transmission request) is a feature of CAN bus. Usage of RTR is not recommended for CANopen and it is not implemented in CANopenNode.
+
+### Error control
+When node is started (in NMT operational state), it is allowed to send or receive Process Data Objects (PDO). If Error Register (object 0x1001) is set, then NMT operational state may not be allowed.
+
+### Power saving
+All CANopen objects calculates next timer info for OS. Calculation is based on various timers which expire in known time. Can be used to put microcontroller into sleep and wake at the calculated time.
+
+
+Change Log
+----------
+See [CHANGELOG.md](doc/CHANGELOG.md)
 
 
 License
 -------
-CANopenNode is distributed under the terms of the GNU General Public
-License version 2 with the classpath exception.
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
 
-CANopenNode is free and open source software: you can redistribute
-it and/or modify it under the terms of the GNU General Public License
-as published by the Free Software Foundation, either version 2 of the
-License, or (at your option) any later version.
+http://www.apache.org/licenses/LICENSE-2.0
 
-This program is distributed in the hope that it will be useful,
-but WITHOUT ANY WARRANTY; without even the implied warranty of
-MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
-GNU General Public License for more details.
-
-You should have received a copy of the GNU General Public License
-along with this program. If not, see http://www.gnu.org/licenses/.
-
-### GPL linking exception
-CANopenNode can be easely used also in commercial embedded projects.
-Following clarification and special
-[linking exception to the GNU General Public License](https://en.wikipedia.org/wiki/GPL_linking_exception)
-is included to the distribution terms of CANopenNode:
-
-Linking this library statically or dynamically with other modules is
-making a combined work based on this library. Thus, the terms and
-conditions of the GNU General Public License cover the whole combination.
-
-As a special exception, the copyright holders of this library give
-you permission to link this library with independent modules to
-produce an executable, regardless of the license terms of these
-independent modules, and to copy and distribute the resulting
-executable under terms of your choice, provided that you also meet,
-for each linked independent module, the terms and conditions of the
-license of that module. An independent module is a module which is
-not derived from or based on this library. If you modify this
-library, you may extend this exception to your version of the
-library, but you are not obliged to do so. If you do not wish
-to do so, delete this exception statement from your version.
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.

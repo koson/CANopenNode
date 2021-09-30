@@ -1,10 +1,15 @@
-canopennode
+/example/canopennode_blank
+/canopend
 *.o
+*.persist
+*.persist.old
 
-doc/
+doc/html/
 
 #eclipse
 .cproject
 .project
 .settings/
 
+#kdevelop
+*.kdev4
