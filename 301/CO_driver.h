@@ -570,9 +570,10 @@ typedef enum {
                                          state */
     CO_ERROR_SYSCALL = -17,         /**< Syscall failed */
     CO_ERROR_INVALID_STATE = -18,   /**< Driver not ready */
-    CO_ERROR_NODE_ID_UNCONFIGURED_LSS = -19 /**< Node-id is in LSS unconfigured
+    CO_ERROR_NODE_ID_UNCONFIGURED_LSS = -19, /**< Node-id is in LSS unconfigured
                                          state. If objects are handled properly,
                                          this may not be an error. */
+	CO_ERROR_HAL	 = -20,   /**< HAL error */
 } CO_ReturnError_t;
 
 
