@@ -2,7 +2,7 @@
  * Configuration macros for CANopenNode.
  *
  * @file        CO_config.h
- * @ingroup     CO_STACK_CONFIG
+ * @ingroup     CO_driver
  * @author      Janez Paternoster
  * @copyright   2020 Janez Paternoster
  *
@@ -183,6 +183,18 @@ extern "C" {
 #define CO_CONFIG_HB_CONS_CALLBACK_CHANGE 0x02
 #define CO_CONFIG_HB_CONS_CALLBACK_MULTI 0x04
 #define CO_CONFIG_HB_CONS_QUERY_FUNCT 0x08
+
+/**
+ * Number of heartbeat consumer objects, where each object corresponds to one
+ * sub-index in OD object 0x1016, "Consumer heartbeat time". Each heartbeat
+ * consumer uses own CANrx object. Actual number of heartbeat consumer objects
+ * may be lower, if OD variable 1016 has lower number of sub entries.
+ *
+ * If heartbeat consumer is enabled, then valid values are 1 to 127.
+ */
+#ifdef CO_DOXYGEN
+#define CO_CONFIG_HB_CONS_SIZE 8
+#endif
 /** @} */ /* CO_STACK_CONFIG_NMT_HB */
 
 
@@ -230,6 +242,20 @@ extern "C" {
  */
 #ifdef CO_DOXYGEN
 #define CO_CONFIG_EM_ERR_STATUS_BITS_COUNT (10*8)
+#endif
+
+/**
+ * Size of the internal buffer, where emergencies are stored after error
+ * indication with @ref CO_error() function. Each emergency has to be post-
+ * processed by the @ref CO_EM_process() function. In case of overflow, error is
+ * indicated but emergency message is not sent.
+ *
+ * The same buffer is also used for OD object 0x1003, "Pre-defined error field".
+ *
+ * Each buffer element consumes 8 bytes. Valid values are 1 to 254.
+ */
+#ifdef CO_DOXYGEN
+#define CO_CONFIG_EM_BUFFER_SIZE 16
 #endif
 
 /**

@@ -201,11 +201,10 @@ typedef struct {
      * There must be one NMT object in the device. */
     uint8_t CNT_NMT;
     OD_entry_t *ENTRY_H1017; /**< OD entry for @ref CO_NMT_init() */
-    /** Number of Heartbeat consumer objects, 0 or 1 */
+    /** Number of Heartbeat consumer objects, 0 or 1: object uses from 1 to 127
+     * internal consumers (CANrx), as specified by @ref CO_CONFIG_HB_CONS_SIZE.
+     */
     uint8_t CNT_HB_CONS;
-    /** Number of internal consumers (CANrx), used inside Heartbeat consumer
-     * object, 1 to 127. */
-    uint8_t CNT_ARR_1016;
     OD_entry_t *ENTRY_H1016; /**< OD entry for @ref CO_HBconsumer_init()*/
     /** Number of Emergency objects, 0 or 1: optional producer (CANtx) +
      * optional consumer (CANrx), configurable by @ref CO_CONFIG_EM.
@@ -214,12 +213,6 @@ typedef struct {
     const OD_entry_t *ENTRY_H1001; /**< OD entry for @ref CO_EM_init() */
     OD_entry_t *ENTRY_H1014; /**< OD entry for @ref CO_EM_init() */
     OD_entry_t *ENTRY_H1015; /**< OD entry for @ref CO_EM_init() */
-    /** Size of the fifo buffer, which is used for intermediate storage of
-     * emergency messages. Fifo is used by emergency producer and by error
-     * history (OD object 0x1003). Size is usually equal to size of array in
-     * OD object 0x1003. If later is not used, CNT_ARR_1003 must also be set to
-     * value greater than 0, or emergency producer will not work. */
-    uint8_t CNT_ARR_1003;
     OD_entry_t *ENTRY_H1003; /**< OD entry for @ref CO_EM_init() */
     /** Number of SDO server objects, from 0 to 128 (CANrx + CANtx). There must
      * be at least one SDO server object in the device. */
@@ -298,8 +291,6 @@ typedef struct {
 #if ((CO_CONFIG_HB_CONS) & CO_CONFIG_HB_CONS_ENABLE) || defined CO_DOXYGEN
     /** Heartbeat consumer object, initialised by @ref CO_HBconsumer_init() */
     CO_HBconsumer_t *HBcons;
-    /** Object for monitored nodes, initialised by @ref CO_HBconsumer_init() */
-    CO_HBconsNode_t *HBconsMonitoredNodes;
  #if defined CO_MULTIPLE_OD || defined CO_DOXYGEN
     uint16_t RX_IDX_HB_CONS; /**< Start index in CANrx. */
  #endif
@@ -310,11 +301,6 @@ typedef struct {
     uint16_t RX_IDX_EM_CONS; /**< Start index in CANrx. */
     uint16_t TX_IDX_EM_PROD; /**< Start index in CANtx. */
  #endif
-#if ((CO_CONFIG_EM) & (CO_CONFIG_EM_PRODUCER | CO_CONFIG_EM_HISTORY)) \
-    || defined CO_DOXYGEN
-    /** FIFO for emergency object, initialised by @ref CO_EM_init() */
-    CO_EM_fifo_t *em_fifo;
-#endif
     /** SDO server objects, initialised by @ref CO_SDOserver_init() */
     CO_SDOserver_t *SDOserver;
  #if defined CO_MULTIPLE_OD || defined CO_DOXYGEN

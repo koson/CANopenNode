@@ -83,16 +83,7 @@ int main (void){
 
 
     /* Allocate memory */
-    CO_config_t *config_ptr = NULL;
-#ifdef CO_MULTIPLE_OD
-    /* example usage of CO_MULTIPLE_OD (but still single OD here) */
-    CO_config_t co_config = {0};
-    OD_INIT_CONFIG(co_config); /* helper macro from OD.h */
-    co_config.CNT_LEDS = 1;
-    co_config.CNT_LSS_SLV = 1;
-    config_ptr = &co_config;
-#endif /* CO_MULTIPLE_OD */
-    CO = CO_new(config_ptr, &heapMemoryUsed);
+    CO = CO_new(NULL, &heapMemoryUsed);
     if (CO == NULL) {
         log_printf("Error: Can't allocate memory\n");
         return 0;
@@ -173,17 +164,6 @@ int main (void){
             return 0;
         }
 
-        err = CO_CANopenInitPDO(CO, CO->em, OD, activeNodeId, &errInfo);
-        if(err != CO_ERROR_NO) {
-            if (err == CO_ERROR_OD_PARAMETERS) {
-                log_printf("Error: Object Dictionary entry 0x%X\n", errInfo);
-            }
-            else {
-                log_printf("Error: PDO initialization failed: %d\n", err);
-            }
-            return 0;
-        }
-
         /* Configure Timer interrupt function for execution every 1 millisecond */
 
 
@@ -251,7 +231,7 @@ int main (void){
 void tmrTask_thread(void){
 
     for(;;) {
-        CO_LOCK_OD(CO->CANmodule);
+        CO_LOCK_OD(co->CANmodule);
         if (!CO->nodeIdUnconfigured && CO->CANmodule->CANnormal) {
             bool_t syncWas = false;
             /* get time difference since last function call */
@@ -269,7 +249,7 @@ void tmrTask_thread(void){
 
             /* Further I/O or nonblocking application code may go here. */
         }
-        CO_UNLOCK_OD(CO->CANmodule);
+        CO_UNLOCK_OD(co->CANmodule);
     }
 }
 

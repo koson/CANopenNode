@@ -501,22 +501,6 @@ typedef enum {
 
 
 /**
- * Restricted CAN-IDs
- *
- * Macro for verifying 'Restricted CAN-IDs', as specified by standard CiA301.
- * They shall not be used for SYNC, TIME, EMCY, PDO and SDO.
- */
-#ifndef CO_IS_RESTRICTED_CAN_ID
-#define CO_IS_RESTRICTED_CAN_ID(CAN_ID) ((CAN_ID) <= 0x7F \
-        || ((CAN_ID) >= 0x101 && (CAN_ID) <= 0x180) \
-        || ((CAN_ID) >= 0x581 && (CAN_ID) <= 0x5FF) \
-        || ((CAN_ID) >= 0x601 && (CAN_ID) <= 0x67F) \
-        || ((CAN_ID) >= 0x6E0 && (CAN_ID) <= 0x6FF) \
-        || (CAN_ID) >= 0x701)
-#endif
-
-
-/**
  * CAN error status bitmasks.
  *
  * CAN warning level is reached, if CAN transmit or receive error counter is
@@ -573,7 +557,9 @@ typedef enum {
     CO_ERROR_NODE_ID_UNCONFIGURED_LSS = -19, /**< Node-id is in LSS unconfigured
                                          state. If objects are handled properly,
                                          this may not be an error. */
-	CO_ERROR_HAL	 = -20,   /**< HAL error */
+    CO_ERROR_HAL	 = -20,   /**< HAL error */
+
+
 } CO_ReturnError_t;
 
 

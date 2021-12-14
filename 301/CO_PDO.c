@@ -186,9 +186,6 @@ static CO_ReturnError_t PDO_initMapping(CO_PDO_common_t *PDO,
         uint32_t map = 0;
 
         odRet = OD_get_u32(OD_PDOMapPar, i + 1, &map, true);
-        if (odRet == ODR_SUB_NOT_EXIST) {
-            continue;
-        }
         if (odRet != ODR_OK) {
             if (errInfo != NULL) {
                 *errInfo = (((uint32_t)OD_getIndex(OD_PDOMapPar))<<8) | i;
@@ -243,7 +240,7 @@ static ODR_t OD_write_PDO_mapping(OD_stream_t *stream, const void *buf,
 
     /* PDO must be disabled before mapping configuration */
     if (PDO->valid || (PDO->mappedObjectsCount != 0 && stream->subIndex > 0)) {
-        return ODR_UNSUPP_ACCESS;
+        return ODR_INVALID_VALUE;
     }
 
     if (stream->subIndex == 0) {
@@ -251,7 +248,7 @@ static ODR_t OD_write_PDO_mapping(OD_stream_t *stream, const void *buf,
         size_t pdoDataLength = 0;
 
         if (mappedObjectsCount > CO_PDO_MAX_MAPPED_ENTRIES) {
-            return ODR_MAP_LEN;
+            return ODR_INVALID_VALUE;
         }
 
         /* validate enabled mapping parameters */
@@ -540,7 +537,7 @@ static ODR_t OD_write_14xx(OD_stream_t *stream, const void *buf,
          * enabling the PDO */
         if ((COB_ID & 0x3FFFF800) != 0
             || (valid && PDO->valid && CAN_ID != PDO->configuredCanId)
-            || (valid && CO_IS_RESTRICTED_CAN_ID(CAN_ID))
+            || (valid && CAN_ID == 0)
             || (valid && PDO->mappedObjectsCount == 0)
         ) {
             return ODR_INVALID_VALUE;
@@ -811,7 +808,7 @@ void CO_RPDO_process(CO_RPDO_t *RPDO,
         bool_t rpdoReceived = false;
         while (CO_FLAG_READ(RPDO->CANrxNew[bufNo])) {
             rpdoReceived = true;
-            uint8_t *dataRPDO = RPDO->CANrxData[bufNo];
+            uint8_t *dataRPDO = &RPDO->CANrxData[0][bufNo];
 
             /* Clear the flag. If between the copy operation CANrxNew is set
              * by receive thread, then copy the latest data again. */
@@ -965,7 +962,7 @@ static ODR_t OD_write_18xx(OD_stream_t *stream, const void *buf,
          * enabling the PDO */
         if ((COB_ID & 0x3FFFF800) != 0
             || (valid && PDO->valid && CAN_ID != PDO->configuredCanId)
-            || (valid && CO_IS_RESTRICTED_CAN_ID(CAN_ID))
+            || (valid && CAN_ID == 0)
             || (valid && PDO->mappedObjectsCount == 0)
         ) {
             return ODR_INVALID_VALUE;
@@ -1323,11 +1320,8 @@ void CO_TPDO_process(CO_TPDO_t *TPDO,
                      bool_t NMTisOperational,
                      bool_t syncWas)
 {
+    (void) syncWas; (void) timerNext_us;
     CO_PDO_common_t *PDO = &TPDO->PDO_common;
-#if ((CO_CONFIG_PDO) & CO_CONFIG_TPDO_TIMERS_ENABLE)
-    (void) timerNext_us;
-#endif
-    (void) syncWas;
 
     if (PDO->valid && NMTisOperational) {
 
@@ -1414,8 +1408,7 @@ void CO_TPDO_process(CO_TPDO_t *TPDO,
                         TPDO->syncCounter = 254;
                     }
                     else {
-                        /* Send first TPDO somewhere in the middle */
-                        TPDO->syncCounter = TPDO->transmissionType / 2 + 1;
+                        TPDO->syncCounter = TPDO->transmissionType;
                     }
                 }
                 /* If the syncStartValue is in use, start first TPDO after SYNC
