@@ -32,7 +32,10 @@
 /* default configuration, see CO_config.h */
 #ifndef CO_CONFIG_EM
 #define CO_CONFIG_EM (CO_CONFIG_EM_PRODUCER | \
+<<<<<<< HEAD
                       CO_CONFIG_EM_HISTORY | \
+=======
+>>>>>>> v2.0-master
                       CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE | \
                       CO_CONFIG_GLOBAL_FLAG_TIMERNEXT)
 #endif

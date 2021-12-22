@@ -40,9 +40,12 @@ extern "C" {
 #ifndef CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE
  #define CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE (0)
 #endif
+<<<<<<< HEAD
 #ifndef CO_CONFIG_GLOBAL_RT_FLAG_CALLBACK_PRE
  #define CO_CONFIG_GLOBAL_RT_FLAG_CALLBACK_PRE (0)
 #endif
+=======
+>>>>>>> v2.0-master
 #ifndef CO_CONFIG_GLOBAL_FLAG_TIMERNEXT
  #define CO_CONFIG_GLOBAL_FLAG_TIMERNEXT (0)
 #endif
@@ -112,7 +115,11 @@ extern "C" {
  */
 
 /** Major version number of CANopenNode */
+<<<<<<< HEAD
 #define CO_VERSION_MAJOR 4
+=======
+#define CO_VERSION_MAJOR 2
+>>>>>>> v2.0-master
 /** Minor version number of CANopenNode */
 #define CO_VERSION_MINOR 0
 

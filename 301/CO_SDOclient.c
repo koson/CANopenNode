@@ -271,6 +271,7 @@ CO_ReturnError_t CO_SDOclient_init(CO_SDOclient_t *SDO_C,
 #if (CO_CONFIG_SDO_CLI) & CO_CONFIG_FLAG_CALLBACK_PRE
     SDO_C->pFunctSignal = NULL;
     SDO_C->functSignalObject = NULL;
+<<<<<<< HEAD
 #endif
 
     /* prepare circular fifo buffer */
@@ -312,6 +313,16 @@ CO_ReturnError_t CO_SDOclient_init(CO_SDOclient_t *SDO_C,
                                                      COB_IDClientToServer,
                                                      COB_IDServerToClient,
                                                      nodeIDOfTheSDOServer);
+=======
+#endif
+
+    /* prepare circular fifo buffer */
+    CO_fifo_init(&SDO_C->bufFifo, SDO_C->buf,
+                 CO_CONFIG_SDO_CLI_BUFFER_SIZE + 1);
+
+    SDO_C->state = CO_SDO_ST_IDLE;
+    CO_FLAG_CLEAR(SDO_C->CANrxNew);
+>>>>>>> v2.0-master
 
     if (cliSetupRet != CO_SDO_RT_ok_communicationEnd) {
         return CO_ERROR_ILLEGAL_ARGUMENT;
@@ -526,6 +537,7 @@ CO_SDO_return_t CO_SDOclientDownload(CO_SDOclient_t *SDO_C,
 #if (CO_CONFIG_SDO_CLI) & CO_CONFIG_SDO_CLI_LOCAL
     /* Transfer data locally **************************************************/
     else if (SDO_C->state == CO_SDO_ST_DOWNLOAD_LOCAL_TRANSFER && !abort) {
+<<<<<<< HEAD
         /* search object dictionary in first pass */
         if (SDO_C->OD_IO.write == NULL) {
             ODR_t odRet;
@@ -549,6 +561,11 @@ CO_SDO_return_t CO_SDOclientDownload(CO_SDOclient_t *SDO_C,
                 abortCode = CO_SDO_AB_DEVICE_INCOMPAT;
                 ret = CO_SDO_RT_endedWithClientAbort;
             }
+=======
+        if (SDO_C->SDO->state != CO_SDO_ST_IDLE) {
+            abortCode = CO_SDO_AB_DEVICE_INCOMPAT;
+            ret = CO_SDO_RT_endedWithClientAbort;
+>>>>>>> v2.0-master
         }
         /* write data, in several passes if necessary */
         if (SDO_C->OD_IO.write != NULL) {
@@ -651,6 +668,7 @@ CO_SDO_return_t CO_SDOclientDownload(CO_SDOclient_t *SDO_C,
                 }
             }
         }
+<<<<<<< HEAD
 
         if (ret != CO_SDO_RT_waitingLocalTransfer) {
             SDO_C->state = CO_SDO_ST_IDLE;
@@ -661,6 +679,9 @@ CO_SDO_return_t CO_SDOclientDownload(CO_SDOclient_t *SDO_C,
             *timerNext_us = 0;
         }
 #endif
+=======
+        SDO_C->state = CO_SDO_ST_IDLE;
+>>>>>>> v2.0-master
     }
 #endif /* CO_CONFIG_SDO_CLI_LOCAL */
     /* CAN data received ******************************************************/
@@ -998,7 +1019,11 @@ CO_SDO_return_t CO_SDOclientDownload(CO_SDOclient_t *SDO_C,
             /* get up to 7 data bytes */
             count = CO_fifo_altRead(&SDO_C->bufFifo,
                                     &SDO_C->CANtxBuff->data[1], 7);
+<<<<<<< HEAD
             SDO_C->block_noData = (uint8_t)(7 - count);
+=======
+            SDO_C->block_noData = 7 - count;
+>>>>>>> v2.0-master
 
             /* verify if sizeTran is too large */
             SDO_C->sizeTran += count;
@@ -1167,6 +1192,7 @@ CO_SDO_return_t CO_SDOclientUpload(CO_SDOclient_t *SDO_C,
 #if (CO_CONFIG_SDO_CLI) & CO_CONFIG_SDO_CLI_LOCAL
     /* Transfer data locally **************************************************/
     else if (SDO_C->state == CO_SDO_ST_UPLOAD_LOCAL_TRANSFER && !abort) {
+<<<<<<< HEAD
         /* search object dictionary in first pass */
         if (SDO_C->OD_IO.read == NULL) {
             ODR_t odRet;
@@ -1190,6 +1216,11 @@ CO_SDO_return_t CO_SDOclientUpload(CO_SDOclient_t *SDO_C,
                 abortCode = CO_SDO_AB_DEVICE_INCOMPAT;
                 ret = CO_SDO_RT_endedWithClientAbort;
             }
+=======
+        if (SDO_C->SDO->state != 0) {
+            abortCode = CO_SDO_AB_DEVICE_INCOMPAT;
+            ret = CO_SDO_RT_endedWithClientAbort;
+>>>>>>> v2.0-master
         }
 
         size_t countFifo = CO_fifo_getSpace(&SDO_C->bufFifo);
@@ -1261,6 +1292,7 @@ CO_SDO_return_t CO_SDOclientUpload(CO_SDOclient_t *SDO_C,
                 }
             }
         }
+<<<<<<< HEAD
 
         if (ret != CO_SDO_RT_uploadDataBufferFull
             && ret != CO_SDO_RT_waitingLocalTransfer
@@ -1273,6 +1305,9 @@ CO_SDO_return_t CO_SDOclientUpload(CO_SDOclient_t *SDO_C,
             *timerNext_us = 0;
         }
 #endif
+=======
+        SDO_C->state = CO_SDO_ST_IDLE;
+>>>>>>> v2.0-master
     }
 #endif /* CO_CONFIG_SDO_CLI_LOCAL */
     /* CAN data received ******************************************************/

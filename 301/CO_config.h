@@ -100,18 +100,25 @@ extern "C" {
  */
 #define CO_CONFIG_FLAG_OD_DYNAMIC 0x4000
 
+<<<<<<< HEAD
 /** This flag may be set globally for mainline objects to
  * @ref CO_CONFIG_FLAG_CALLBACK_PRE */
+=======
+/** This flag may be set globally to @ref CO_CONFIG_FLAG_CALLBACK_PRE */
+>>>>>>> v2.0-master
 #ifdef CO_DOXYGEN
 #define CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE (0)
 #endif
 
+<<<<<<< HEAD
 /** This flag may be set globally for Real-Time objects (SYNC, PDO) to
  * @ref CO_CONFIG_FLAG_CALLBACK_PRE */
 #ifdef CO_DOXYGEN
 #define CO_CONFIG_GLOBAL_RT_FLAG_CALLBACK_PRE (0)
 #endif
 
+=======
+>>>>>>> v2.0-master
 /** This flag may be set globally to @ref CO_CONFIG_FLAG_TIMERNEXT */
 #ifdef CO_DOXYGEN
 #define CO_CONFIG_GLOBAL_FLAG_TIMERNEXT (0)
@@ -170,6 +177,7 @@ extern "C" {
  *   Callback is configured by CO_HBconsumer_initCallbackPre().
  * - #CO_CONFIG_FLAG_TIMERNEXT - Enable calculation of timerNext_us variable
  *   inside CO_HBconsumer_process().
+<<<<<<< HEAD
  * - #CO_CONFIG_FLAG_OD_DYNAMIC - Enable dynamic configuration of monitored
  *   nodes (Writing to object 0x1016 re-configures the monitored nodes).
  *
@@ -178,6 +186,13 @@ extern "C" {
  */
 #ifdef CO_DOXYGEN
 #define CO_CONFIG_HB_CONS (CO_CONFIG_HB_CONS_ENABLE | CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE | CO_CONFIG_GLOBAL_FLAG_TIMERNEXT | CO_CONFIG_GLOBAL_FLAG_OD_DYNAMIC)
+=======
+ * Note that CO_CONFIG_HB_CONS_CALLBACK_CHANGE and
+ * CO_CONFIG_HB_CONS_CALLBACK_MULTI cannot be set simultaneously.
+ */
+#ifdef CO_DOXYGEN
+#define CO_CONFIG_HB_CONS (CO_CONFIG_HB_CONS_ENABLE | CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE | CO_CONFIG_GLOBAL_FLAG_TIMERNEXT)
+>>>>>>> v2.0-master
 #endif
 #define CO_CONFIG_HB_CONS_ENABLE 0x01
 #define CO_CONFIG_HB_CONS_CALLBACK_CHANGE 0x02
@@ -463,7 +478,11 @@ extern "C" {
  * - #CO_CONFIG_FLAG_OD_DYNAMIC - Enable dynamic configuration of SYNC.
  */
 #ifdef CO_DOXYGEN
+<<<<<<< HEAD
 #define CO_CONFIG_SYNC (CO_CONFIG_SYNC_ENABLE | CO_CONFIG_SYNC_PRODUCER | CO_CONFIG_GLOBAL_RT_FLAG_CALLBACK_PRE | CO_CONFIG_GLOBAL_FLAG_TIMERNEXT | CO_CONFIG_GLOBAL_FLAG_OD_DYNAMIC)
+=======
+#define CO_CONFIG_SYNC (CO_CONFIG_SYNC_ENABLE | CO_CONFIG_SYNC_PRODUCER | CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE | CO_CONFIG_GLOBAL_FLAG_TIMERNEXT | CO_CONFIG_GLOBAL_FLAG_OD_DYNAMIC)
+>>>>>>> v2.0-master
 #endif
 #define CO_CONFIG_SYNC_ENABLE 0x01
 #define CO_CONFIG_SYNC_PRODUCER 0x02
@@ -492,7 +511,11 @@ extern "C" {
  * - #CO_CONFIG_FLAG_OD_DYNAMIC - Enable dynamic configuration of PDO.
  */
 #ifdef CO_DOXYGEN
+<<<<<<< HEAD
 #define CO_CONFIG_PDO (CO_CONFIG_RPDO_ENABLE | CO_CONFIG_TPDO_ENABLE | CO_CONFIG_RPDO_TIMERS_ENABLE | CO_CONFIG_TPDO_TIMERS_ENABLE | CO_CONFIG_PDO_SYNC_ENABLE | CO_CONFIG_PDO_OD_IO_ACCESS | CO_CONFIG_GLOBAL_RT_FLAG_CALLBACK_PRE | CO_CONFIG_GLOBAL_FLAG_TIMERNEXT | CO_CONFIG_GLOBAL_FLAG_OD_DYNAMIC)
+=======
+#define CO_CONFIG_PDO (CO_CONFIG_RPDO_ENABLE | CO_CONFIG_TPDO_ENABLE | CO_CONFIG_PDO_SYNC_ENABLE | CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE | CO_CONFIG_GLOBAL_FLAG_TIMERNEXT | CO_CONFIG_GLOBAL_FLAG_OD_DYNAMIC)
+>>>>>>> v2.0-master
 #endif
 #define CO_CONFIG_RPDO_ENABLE 0x01
 #define CO_CONFIG_TPDO_ENABLE 0x02
@@ -505,7 +528,11 @@ extern "C" {
 
 /**
  * @defgroup CO_STACK_CONFIG_STORAGE Data storage
+<<<<<<< HEAD
  * Data storage with CANopen OD objects 1010 and 1011, CiA 301
+=======
+ * Data storage with CANopen OD objects 1010 and 1011
+>>>>>>> v2.0-master
  * @{
  */
 /**

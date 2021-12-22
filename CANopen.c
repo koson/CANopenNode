@@ -236,6 +236,7 @@
 #define CO_RX_CNT_LSS_MST OD_CNT_LSS_MST
 #define CO_TX_CNT_LSS_MST OD_CNT_LSS_MST
 
+<<<<<<< HEAD
 #if (CO_CONFIG_GTW) & CO_CONFIG_GTW_ASCII
  #define OD_CNT_GTWA 1
 #endif
@@ -359,6 +360,25 @@ CO_t *CO_new(CO_config_t *config, uint32_t *heapMemoryUsed) {
             mem += sizeof(CO_HBconsumer_t);
             ON_MULTI_OD(RX_CNT_HB_CONS = CO_CONFIG_HB_CONS_SIZE);
         }
+=======
+    /* NMT_Heartbeat */
+    CO->NMT = (CO_NMT_t *)calloc(1, sizeof(CO_NMT_t));
+    if (CO->NMT == NULL) errCnt++;
+    CO_memoryUsed += sizeof(CO_NMT_t);
+
+#if CO_NO_SYNC == 1
+    /* SYNC */
+    CO->SYNC = (CO_SYNC_t *)calloc(1, sizeof(CO_SYNC_t));
+    if (CO->SYNC == NULL) errCnt++;
+    CO_memoryUsed += sizeof(CO_SYNC_t);
+#endif
+
+#if CO_NO_TIME == 1
+    /* TIME */
+    CO->TIME = (CO_TIME_t *)calloc(1, sizeof(CO_TIME_t));
+    if (CO->TIME == NULL) errCnt++;
+    CO_memoryUsed += sizeof(CO_TIME_t);
+>>>>>>> v2.0-master
 #endif
 
         /* Emergency */
@@ -775,7 +795,34 @@ void CO_delete(CO_t *co) {
 CO_t *CO_new(CO_config_t *config, uint32_t *heapMemoryUsed) {
     (void)config; (void)heapMemoryUsed;
 
+<<<<<<< HEAD
     CO_t *co = &COO;
+=======
+    (void)heapMemoryUsed;
+
+    /* If CANopen was initialized before, return. */
+    if (CO != NULL) {
+        return CO_ERROR_NO;
+    }
+
+    /* globals */
+    CO = &COO;
+
+    /* CANmodule */
+    CO->CANmodule[0] = &COO_CANmodule;
+    CO_CANmodule_rxArray0 = &COO_CANmodule_rxArray0[0];
+    CO_CANmodule_txArray0 = &COO_CANmodule_txArray0[0];
+
+    /* SDOserver */
+    for (i = 0; i < CO_NO_SDO_SERVER; i++) {
+        CO->SDO[i] = &COO_SDO[i];
+    }
+    CO_SDO_ODExtensions = &COO_SDO_ODExtensions[0];
+
+    /* Emergency */
+    CO->em = &COO_EM;
+    CO->emPr = &COO_EMpr;
+>>>>>>> v2.0-master
 
     co->CANmodule = &COO_CANmodule;
     co->CANrx = &COO_CANmodule_rxArray[0];
@@ -785,10 +832,17 @@ CO_t *CO_new(CO_config_t *config, uint32_t *heapMemoryUsed) {
 #if (CO_CONFIG_HB_CONS) & CO_CONFIG_HB_CONS_ENABLE
     co->HBcons = &COO_HBcons;
 #endif
+<<<<<<< HEAD
     co->em = &COO_EM;
     co->SDOserver = &COO_SDOserver[0];
 #if (CO_CONFIG_SDO_CLI) & CO_CONFIG_SDO_CLI_ENABLE
     co->SDOclient = &COO_SDOclient[0];
+=======
+
+#if CO_NO_TIME == 1
+    /* TIME */
+    CO->TIME = &COO_TIME;
+>>>>>>> v2.0-master
 #endif
 #if (CO_CONFIG_TIME) & CO_CONFIG_TIME_ENABLE
     co->TIME = &COO_TIME;

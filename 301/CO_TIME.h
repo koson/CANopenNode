@@ -27,9 +27,12 @@
 #define CO_TIME_H
 
 #include "301/CO_driver.h"
+<<<<<<< HEAD
 #include "301/CO_ODinterface.h"
 #include "301/CO_NMT_Heartbeat.h"
 
+=======
+>>>>>>> v2.0-master
 
 /* default configuration, see CO_config.h */
 #ifndef CO_CONFIG_TIME
@@ -74,6 +77,21 @@ extern "C" {
 /** Length of the TIME message */
 #define CO_TIME_MSG_LENGTH 6
 
+
+#ifndef timeOfDay_t
+typedef union {
+    unsigned long long ullValue;
+    struct {
+        unsigned long ms:28;
+        unsigned reserved:4;
+        unsigned days:16;
+        unsigned reserved2:16;
+    };
+} timeOfDay_t;
+#endif
+
+typedef timeOfDay_t TIME_OF_DAY;
+typedef timeOfDay_t TIME_DIFFERENCE;
 
 /**
  * TIME producer and consumer object.

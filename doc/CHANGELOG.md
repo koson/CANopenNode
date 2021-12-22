@@ -1,6 +1,7 @@
 Change Log
 ==========
 
+<<<<<<< HEAD
 v4.0 - current
 --------------
 - [Source Code](https://github.com/CANopenNode/CANopenNode/tree/newOD)
@@ -22,6 +23,11 @@ v2.0 - 2020-02-25
 -----------------
 - [Source Code](https://github.com/CANopenNode/CANopenNode/tree/v2.0-master)
 - [Full ChangeLog](https://github.com/CANopenNode/CANopenNode/compare/v1.3-master...v2.0-master)
+=======
+[Unreleased master]
+-------------------------
+- [Full ChangeLog](https://github.com/CANopenNode/CANopenNode/compare/v1.3...master)
+>>>>>>> v2.0-master
 ### Removed
 - All drivers removed from this project, except Neuberger-socketCAN for Linux.
 ### Changed

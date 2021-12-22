@@ -17,8 +17,14 @@ INCLUDE_DIRS = \
 
 SOURCES = \
 	$(DRV_SRC)/CO_driver_blank.c \
+<<<<<<< HEAD
 	$(DRV_SRC)/CO_storageBlank.c \
 	$(CANOPEN_SRC)/301/CO_ODinterface.c \
+=======
+	$(DRV_SRC)/eeprom.c \
+	$(CANOPEN_SRC)/301/CO_SDOserver.c \
+	$(CANOPEN_SRC)/301/CO_Emergency.c \
+>>>>>>> v2.0-master
 	$(CANOPEN_SRC)/301/CO_NMT_Heartbeat.c \
 	$(CANOPEN_SRC)/301/CO_HBconsumer.c \
 	$(CANOPEN_SRC)/301/CO_Emergency.c \
@@ -36,10 +42,14 @@ SOURCES = \
 
 OBJS = $(SOURCES:%.c=%.o)
 CC ?= gcc
+<<<<<<< HEAD
 OPT =
 OPT += -g
 #OPT += -DCO_USE_GLOBALS
 #OPT += -DCO_MULTIPLE_OD
+=======
+OPT = -g -DCO_VERSION_MAJOR=2
+>>>>>>> v2.0-master
 CFLAGS = -Wall $(OPT) $(INCLUDE_DIRS)
 LDFLAGS =
 

@@ -35,11 +35,15 @@
 #ifndef CO_CONFIG_HB_CONS
 #define CO_CONFIG_HB_CONS (CO_CONFIG_HB_CONS_ENABLE | \
                            CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE | \
+<<<<<<< HEAD
                            CO_CONFIG_GLOBAL_FLAG_TIMERNEXT | \
                            CO_CONFIG_GLOBAL_FLAG_OD_DYNAMIC)
 #endif
 #ifndef CO_CONFIG_HB_CONS_SIZE
 #define CO_CONFIG_HB_CONS_SIZE 8
+=======
+                           CO_CONFIG_GLOBAL_FLAG_TIMERNEXT)
+>>>>>>> v2.0-master
 #endif
 
 #if ((CO_CONFIG_HB_CONS) & CO_CONFIG_HB_CONS_ENABLE) || defined CO_DOXYGEN
@@ -110,7 +114,11 @@ typedef struct {
     /** Callback for remote NMT changed event.
      *  From CO_HBconsumer_initCallbackNmtChanged() or NULL. */
     void (*pFunctSignalNmtChanged)(uint8_t nodeId, uint8_t idx,
+<<<<<<< HEAD
                                    CO_NMT_internalState_t NMTstate,
+=======
+                                   CO_NMT_internalState_t state,
+>>>>>>> v2.0-master
                                    void *object);
     /** Pointer to object */
     void *pFunctSignalObjectNmtChanged;
@@ -167,7 +175,11 @@ typedef struct {
     /** Callback for remote NMT changed event.
      *  From CO_HBconsumer_initCallbackNmtChanged() or NULL. */
     void (*pFunctSignalNmtChanged)(uint8_t nodeId, uint8_t idx,
+<<<<<<< HEAD
                                    CO_NMT_internalState_t NMTstate,
+=======
+                                   CO_NMT_internalState_t state,
+>>>>>>> v2.0-master
                                    void *object);
     /** Pointer to object */
     void *pFunctSignalObjectNmtChanged;
@@ -235,10 +247,19 @@ void CO_HBconsumer_initCallbackPre(
  */
 void CO_HBconsumer_initCallbackNmtChanged(
         CO_HBconsumer_t        *HBcons,
+<<<<<<< HEAD
         uint8_t                 idx,
         void                   *object,
         void                  (*pFunctSignal)(uint8_t nodeId, uint8_t idx,
                                               CO_NMT_internalState_t NMTstate,
+=======
+#if ((CO_CONFIG_HB_CONS) & CO_CONFIG_HB_CONS_CALLBACK_MULTI) || defined CO_DOXYGEN
+        uint8_t                 idx,
+#endif
+        void                   *object,
+        void                  (*pFunctSignal)(uint8_t nodeId, uint8_t idx,
+                                              CO_NMT_internalState_t state,
+>>>>>>> v2.0-master
                                               void *object));
 #endif
 

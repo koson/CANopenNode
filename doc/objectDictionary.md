@@ -1,6 +1,11 @@
 Object Dictionary
 =================
 
+<<<<<<< HEAD
+=======
+**THIS IS AVAILABLE IN THE NEXT VERSION**
+
+>>>>>>> v2.0-master
 Definitions from CiA 301 {#definitions-from-cia-301}
 ----------------------------------------------------
 The **Object Dictionary** is a collection of all the data items which have an influence on the behavior of the application objects, the communication objects and the state machine used on this device. It serves as an interface between the communication and the application.
@@ -22,15 +27,22 @@ The term **OD entry** means structure element, which contains some basic propert
 
 ### Access
 Application and the stack have access to OD objects via universal @ref OD_t object and @ref OD_find() function. No direct access to custom structures, which define object dictionary, is required. Properties for specific OD variable is fetched with @ref OD_getSub() function. Access to actual variable is via **read** and **write** functions. Pointer to those two functions is fetched by @ref OD_getSub(). See @ref OD_stream_t. See also shortcuts: @ref CO_ODgetSetters, for access to data of different type.
+<<<<<<< HEAD
 
 Note that OD variables can be accessed from different threads. CANopenNode basically runs in two threads: fast real-time (PDO processing, etc.) and time non-critical mainline (SDO etc.). Both threads have access to OD variables, so care must be taken into account. CANopenNode uses locking mechanism, where SDO server prevents execution of the real-time thread at the moment it reads or writes OD variable. The same protection of the OD variables is necessary in @ref CO_storage. For more information see @ref CO_critical_sections in CO_driver.h.
+=======
+>>>>>>> v2.0-master
 
 ### Example usage
 ```c
 extern OD_t *ODxyz;
 
 void myFunc(OD_t *od) {
+<<<<<<< HEAD
     ODR_t odRet;
+=======
+    ODR_t ret;
+>>>>>>> v2.0-master
     OD_entry_t *entry;
     OD_IO_t io1008;
     char buf[50];
@@ -39,7 +51,11 @@ void myFunc(OD_t *od) {
 
     /* Init IO for "Manufacturer device name" at index 0x1008, sub-index 0x00 */
     entry = OD_find(od, 0x1008);
+<<<<<<< HEAD
     odRet = OD_getSub(entry, 0x00, &io1008, false);
+=======
+    ret = OD_getSub(entry, 0x00, &io1008, false);
+>>>>>>> v2.0-master
     /* Read with io1008, subindex = 0x00 */
     if (odRet == ODR_OK) {
         /* Locking is necessary from mainline thread, but must not be used from

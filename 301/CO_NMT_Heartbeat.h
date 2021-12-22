@@ -333,6 +333,19 @@ static inline void CO_NMT_sendInternalCommand(CO_NMT_t *NMT,
 }
 
 
+/**
+ * Set internal NMT state
+ *
+ * Functions sets state directly, without any checking. @ref CO_NMT_process()
+ * may also switch between states automatically, see @ref CO_NMT_control_t.
+ *
+ * @param NMT This object.
+ * @param state New state.
+ */
+void CO_NMT_setInternalState(CO_NMT_t *NMT,
+                                           CO_NMT_internalState_t state);
+
+
 #if ((CO_CONFIG_NMT) & CO_CONFIG_NMT_MASTER) || defined CO_DOXYGEN
 /**
  * Send NMT master command.

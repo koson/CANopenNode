@@ -33,10 +33,13 @@
 #error CO_CONFIG_HB_CONS_CALLBACK_CHANGE and CO_CONFIG_HB_CONS_CALLBACK_MULTI cannot be set simultaneously!
 #endif
 
+<<<<<<< HEAD
 #if CO_CONFIG_HB_CONS_SIZE < 1 || CO_CONFIG_HB_CONS_SIZE > 127
 #error CO_CONFIG_HB_CONS_SIZE is not correct
 #endif
 
+=======
+>>>>>>> v2.0-master
 /*
  * Read received message from CAN module.
  *
@@ -138,6 +141,7 @@ CO_ReturnError_t CO_HBconsumer_init(CO_HBconsumer_t *HBcons,
     HBcons->CANdevRx = CANdevRx;
     HBcons->CANdevRxIdxStart = CANdevRxIdxStart;
 
+<<<<<<< HEAD
     /* get actual number of monitored nodes */
     HBcons->numberOfMonitoredNodes =
         OD_1016_HBcons->subEntriesCount-1 < CO_CONFIG_HB_CONS_SIZE ?
@@ -160,6 +164,21 @@ CO_ReturnError_t CO_HBconsumer_init(CO_HBconsumer_t *HBcons,
             if (ret != CO_ERROR_OD_PARAMETERS)
                 return ret;
         }
+=======
+    for(i=0; i<HBcons->numberOfMonitoredNodes; i++) {
+        uint8_t nodeId = (HBcons->HBconsTime[i] >> 16U) & 0xFFU;
+        uint16_t time = HBcons->HBconsTime[i] & 0xFFFFU;
+        ret = CO_HBconsumer_initEntry(HBcons, i, nodeId, time);
+#if (CO_CONFIG_HB_CONS) & CO_CONFIG_FLAG_CALLBACK_PRE
+            HBcons->monitoredNodes[i].pFunctSignalPre = NULL;
+#endif
+#if (CO_CONFIG_HB_CONS) & CO_CONFIG_HB_CONS_CALLBACK_MULTI
+            HBcons->monitoredNodes[i].pFunctSignalNmtChanged = NULL;
+            HBcons->monitoredNodes[i].pFunctSignalHbStarted = NULL;
+            HBcons->monitoredNodes[i].pFunctSignalTimeout = NULL;
+            HBcons->monitoredNodes[i].pFunctSignalRemoteReset = NULL;
+#endif
+>>>>>>> v2.0-master
     }
 
     /* configure extension for OD */
@@ -368,7 +387,11 @@ void CO_HBconsumer_process(
     (void)timerNext_us; /* may be unused */
 
     bool_t allMonitoredActiveCurrent = true;
+<<<<<<< HEAD
     bool_t allMonitoredOperationalCurrent = true;
+=======
+    uint8_t allMonitoredOperationalCurrent = CO_NMT_OPERATIONAL;
+>>>>>>> v2.0-master
 
     if (NMTisPreOrOperational && HBcons->NMTisPreOrOperationalPrev) {
         for (uint8_t i=0; i<HBcons->numberOfMonitoredNodes; i++) {

@@ -35,7 +35,11 @@
 #ifndef CO_CONFIG_SYNC
 #define CO_CONFIG_SYNC (CO_CONFIG_SYNC_ENABLE | \
                         CO_CONFIG_SYNC_PRODUCER | \
+<<<<<<< HEAD
                         CO_CONFIG_GLOBAL_RT_FLAG_CALLBACK_PRE | \
+=======
+                        CO_CONFIG_GLOBAL_FLAG_CALLBACK_PRE | \
+>>>>>>> v2.0-master
                         CO_CONFIG_GLOBAL_FLAG_TIMERNEXT | \
                         CO_CONFIG_GLOBAL_FLAG_OD_DYNAMIC)
 #endif
