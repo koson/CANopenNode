@@ -176,7 +176,8 @@ static inline void CO_TIME_set(CO_TIME_t *TIME,
                                uint16_t days,
                                uint32_t producerInterval_ms)
 {
-    if (TIME != NULL) {
+	(void)producerInterval_ms; /* may be unused */
+	if (TIME != NULL) {
         TIME->residual_us = 0;
         TIME->ms = ms;
         TIME->days = days;
