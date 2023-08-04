@@ -279,7 +279,8 @@ static ODR_t OD_write_PDO_mapping(OD_stream_t *stream, const void *buf,
         PDO->mappedObjectsCount = mappedObjectsCount;
     }
     else {
-        ODR_t odRet = PDOconfigMap(PDO, CO_getUint32(buf), stream->subIndex-1,
+        uint32_t val = CO_getUint32(buf);
+        ODR_t odRet = PDOconfigMap(PDO, val, stream->subIndex-1,
                                    PDO->isRPDO, PDO->OD);
         if (odRet != ODR_OK) {
             return odRet;
@@ -1266,8 +1267,8 @@ static CO_ReturnError_t CO_TPDOsend(CO_TPDO_t *TPDO) {
         /* swap multibyte data if big-endian */
  #ifdef CO_BIG_ENDIAN
         if ((stream->attribute & ODA_MB) != 0) {
-            uint8_t *lo = dataOD;
-            uint8_t *hi = dataOD + ODdataLength - 1;
+            uint8_t *lo = dataTPDOCopy;
+            uint8_t *hi = dataTPDOCopy + ODdataLength - 1;
             while (lo < hi) {
                 uint8_t swap = *lo;
                 *lo++ = *hi;
