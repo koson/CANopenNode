@@ -26,10 +26,10 @@
 #ifndef CO_DRIVER_H
 #define CO_DRIVER_H
 
+#include "CO_driver_target.h"
 #include <string.h>
 
 #include "CO_config.h"
-#include "CO_driver_target.h"
 
 #ifdef __cplusplus
 extern "C" {
