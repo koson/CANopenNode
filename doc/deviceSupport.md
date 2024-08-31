@@ -35,6 +35,7 @@ STM32
 * https://github.com/CANopenNode/CanOpenSTM32
 * CANopenNode version: (v4.0)
 
+
 PIC32, dsPIC30, dsPIC33
 -----------------------
 * CANopenNode integration with 16 and 32 bit PIC microcontrollers from Microchip.
@@ -43,6 +44,7 @@ PIC32, dsPIC30, dsPIC33
 * Features: OD storage for PIC32, SDO client demo for PIC32, error counters
 * Development tools: MPLAB X
 * Demo hardware: Explorer 16 from Microchip, [Max32 board](https://reference.digilentinc.com/reference/microprocessor/max32/start)
+* Example with smallest resuorces (less than 2kb RAM), 4TPDO+4RPDO: 16-bit dsPIC30F4011
 
 
 [Analog Devices Inc](https://www.analog.com): MAX32662, MAX32690
@@ -54,7 +56,7 @@ PIC32, dsPIC30, dsPIC33
 * Features: LED indicators, error counters
 * Development tools: Maxim Micros SDK
 * Demo hardware: MAX32662-EVKIT and MAX32690-EVKIT
-* Information updated 2023-02-17 
+* Information updated 2023-02-17
 
 
 Zephyr RTOS
@@ -113,6 +115,7 @@ Other
 * ESP32:
   * 2023-03-11: https://github.com/CANopenNode/CANopenNode/issues/429
   * 2020-07-14: https://github.com/CANopenNode/CANopenNode/issues/198#issuecomment-658429391
+  * [CANopenNode_ESP32](https://github.com/sicrisembay/CANopenNode_ESP32) is a CANopenNode component for ESP-IDF framework.  For ease of maintenance, this uses unmodified CANopenNode stack.  For project examples, refer to [CANopenNode_ESP32_Test](https://github.com/sicrisembay/CANopenNode_ESP32_Test).
 * [FreeRTOS](https://github.com/martinwag/CANopenNode/tree/neuberger-freertos/stack/neuberger-FreeRTOS) by Neuberger, 2020-06-23, based on v1.3-master, see also [issue 198](https://github.com/CANopenNode/CANopenNode/issues/198).
 * [STM32CubeMX HAL](https://github.com/w1ne/CANOpenNode-CubeMX-HAL), 2019-05-03, demo project for Atollic studio, tested on Nucleo STM32L452xx board.
 * K64F_FreeRTOS, Kinetis SDK, 2018-02-13, [zip file](https://github.com/CANopenNode/CANopenNode/pull/28#issuecomment-365392867)
